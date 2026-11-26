@@ -1,0 +1,4 @@
+onlyBuiltDependencies:
+  - "@gorth/principle"
+  - "esbuild"
+  - "unrs-resolver"

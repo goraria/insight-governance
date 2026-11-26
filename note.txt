@@ -1,0 +1,47 @@
+@gorth/insight
+insight-governance
+├── analytics
+│   ├── event
+│   ├── metric
+│   ├── aggregation
+│   ├── funnel
+│   ├── retention
+│   ├── conversion
+│   └── dashboard
+│
+├── reporting
+│   ├── app-report
+│   ├── user-report
+│   ├── creator-report
+│   ├── seller-report
+│   ├── organization-report
+│   └── export
+│
+├── audit
+│   ├── audit-event
+│   ├── actor
+│   ├── action
+│   ├── resource
+│   ├── before-state
+│   ├── after-state
+│   ├── security-event
+│   └── audit-query
+│
+├── moderation
+│   ├── report
+│   ├── content-review
+│   ├── violation
+│   ├── policy
+│   ├── enforcement
+│   ├── appeal
+│   └── moderation-history
+│
+└── risk
+    ├── signal
+    ├── risk-score
+    ├── rule
+    ├── fraud
+    ├── abuse
+    ├── anomaly
+    ├── decision
+    └── risk-history

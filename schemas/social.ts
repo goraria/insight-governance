@@ -1,0 +1,28 @@
+import { z } from "@gorth-com/structure/cores/zod";
+export const socialEventSchema = z.object({
+  idempotencyKey: z.uuid(),
+  name: z.enum([
+    "post.created",
+    "post.updated",
+    "post.deleted",
+    "story.created",
+    "hub.created",
+    "hub.updated",
+    "hub.deleted",
+    "membership.changed",
+    "relationship.follow",
+    "relationship.unfollow",
+    "relationship.accept-follow",
+    "relationship.reject-follow",
+    "relationship.request",
+    "relationship.accept",
+    "relationship.reject",
+    "relationship.unfriend",
+    "relationship.block",
+    "relationship.unblock",
+    "relationship.mute",
+    "relationship.unmute",
+  ]),
+  resourceId: z.uuid(),
+  occurredAt: z.coerce.date(),
+});
