@@ -48,6 +48,8 @@ assert.deepEqual(
   [].sort(),
 );
 const checks = [
+  ["/", "GET", 200],
+  ["/", "HEAD", 200],
   ["/health", "GET", 200],
   ["/health", "HEAD", 200],
   ["/health/", "GET", 404],
