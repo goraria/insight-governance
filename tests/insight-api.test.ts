@@ -1,5 +1,5 @@
 import { HTTPError } from "nitro/h3";
-import type { ApiContext } from "@/types/auth";
+import type { Event } from "@/utils/interface";
 import { beforeEach, expect, it, vi } from "vitest";
 import { ZodError } from "@gorth-com/structure/cores/zod";
 const state = vi.hoisted(() => ({
@@ -8,7 +8,7 @@ const state = vi.hoisted(() => ({
   queries: vi.fn(),
 }));
 vi.mock("@/middlewares/auth", () => ({
-  requireAuth: () => async (c: ApiContext, next: () => Promise<void>) => {
+  requireAuth: () => async (c: Event, next: () => Promise<void>) => {
     if (!c.req.header("authorization"))
       return Response.json(
         { error: "unauthorized" },
@@ -17,8 +17,8 @@ vi.mock("@/middlewares/auth", () => ({
           headers: { "content-type": "application/json; charset=UTF-8" },
         },
       );
-    c.set("subject", "subject");
-    c.set("application", "video");
+    c.set("sub", "subject");
+    c.set("app", "video");
     return await next();
   },
 }));

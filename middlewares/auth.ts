@@ -1,20 +1,19 @@
-import type { ApiEnv } from "@/types/auth";
+import type { Binding, Event, ServiceAccess } from "@/utils/interface";
 import type { MiddlewareHandler } from "hono";
-import type { ApiContext } from "@/types/auth";
+
 import {
   serviceAuthFailure,
   verifyServiceRequest,
 } from "@/lib/auth/verification";
 
-import type { ServiceAccess } from "@/utils/interface";
-export function requireAuth(access: ServiceAccess): MiddlewareHandler<ApiEnv> {
+export function requireAuth(access: ServiceAccess): MiddlewareHandler<Binding> {
   return createHonoRequestGuard<Awaited<ReturnType<typeof verifyServiceRequest>>
   >({
     verify: (request) => verifyServiceRequest(request, access),
     failure: serviceAuthFailure,
     assign(event, auth) {
-      event.set("application", auth.application);
-      event.set("subject", auth.subject);
+      event.set("app", auth.application);
+      event.set("sub", auth.subject);
     },
   });
 }
@@ -22,8 +21,8 @@ export function requireAuth(access: ServiceAccess): MiddlewareHandler<ApiEnv> {
 function createHonoRequestGuard<Auth>(options: {
   verify: (request: Request) => Promise<Auth>
   failure: (error: unknown) => Response
-  assign: (context: ApiContext, identity: Auth) => void
-}): MiddlewareHandler<ApiEnv> {
+  assign: (context: Event, identity: Auth) => void
+}): MiddlewareHandler<Binding> {
   return async (context, next) => {
     let identity: Auth
     try {

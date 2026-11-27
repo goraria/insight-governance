@@ -1,7 +1,7 @@
 import { and, count, desc, eq, sql } from "drizzle-orm"
 import { database } from "@/database"
 import { auditEvent, analyticsEvent } from "@/database/schema"
-import { type Application } from "@/types/insight"
+import { type Application } from "@/utils/constant"
 import { type AuditInput, type PageInput } from "@/schemas/insight"
 import { sanitizeInsightData } from "@/utils/privacy"
 import { rawRecordEvent } from "@/models/analytics-event"

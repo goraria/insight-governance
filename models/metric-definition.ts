@@ -8,7 +8,7 @@ import {
   type MetricInput,
   type RangeInput,
 } from "@/schemas/insight";
-import type { Application } from "@/types/insight";
+import type { Application } from "@/utils/constant";
 export async function rawCreateMetricManagement(
   input: MetricInput,
   application: Application,

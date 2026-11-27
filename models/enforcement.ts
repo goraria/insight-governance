@@ -1,7 +1,7 @@
 import { count, desc, eq } from "drizzle-orm"
 import { database } from "@/database"
 import { auditEvent, enforcement } from "@/database/schema"
-import { type Application } from "@/types/insight"
+import { type Application } from "@/utils/constant"
 import { type EnforcementInput, type PageInput } from "@/schemas/insight"
 import { rawRequireUserManagement } from "@/models/user"
 import { page } from "@/services/query"

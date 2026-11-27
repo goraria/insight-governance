@@ -10,7 +10,7 @@ import {
   isInsufficientScopeError,
   requestToResourceInput,
 } from "better-auth/oauth2";
-import { applicationNamespaces as applications } from "@/lib/constants";
+import { applicationNamespaces as applications } from "@/utils/constant";
 import { nodeEnv, authUrl } from "@/utils/environment";
 import type { ServiceAccess } from "@/utils/interface";
 async function configuration() {

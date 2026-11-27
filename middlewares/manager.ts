@@ -1,12 +1,12 @@
-import type { ApiEnv } from "@/types/auth";
+import type { Binding, Event } from "@/utils/interface";
 import type { MiddlewareHandler } from "hono";
-import type { ApiContext } from "@/types/auth";
+
 import { rawRequireUserManagement as requireManagerServices } from "@/models/user"
 
 /** Local roles are application-owned and never accepted from request bodies. */
-export function requireManager(): MiddlewareHandler<ApiEnv> {
-  return async (context: ApiContext, next) => {
-    await requireManagerServices(context.get("subject")!);
+export function requireManager(): MiddlewareHandler<Binding> {
+  return async (context: Event, next) => {
+    await requireManagerServices(context.get("sub")!);
     return await next();
   };
 }

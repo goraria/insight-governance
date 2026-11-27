@@ -1,7 +1,7 @@
 import { count, desc, eq } from "drizzle-orm"
 import { database } from "@/database"
 import { riskRule } from "@/database/schema"
-import { type Application } from "@/types/insight"
+import { type Application } from "@/utils/constant"
 import { type PageInput, type RuleInput } from "@/schemas/insight"
 import { page } from "@/services/query"
 

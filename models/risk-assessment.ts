@@ -1,7 +1,7 @@
 import { and, count, desc, eq } from "drizzle-orm"
 import { database } from "@/database"
 import { riskAssessment, riskDecision, riskHistory, riskRule, riskSignal } from "@/database/schema"
-import { type Application } from "@/types/insight"
+import { type Application } from "@/utils/constant"
 import { type AssessmentInput, type PageInput } from "@/schemas/insight"
 import { matchesRiskCondition, riskDecisionFor } from "@/utils/risk"
 import { rawRequireUserManagement } from "@/models/user"

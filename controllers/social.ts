@@ -1,8 +1,8 @@
 import { readRequestBody } from "@/utils/request";
-import type { ApiContext } from "@/types/auth";
+import type { Event } from "@/utils/interface";
 import { socialEventSchema } from "@/schemas/social";
 import { recordSocialEvent as recordSocialEventServices } from "@/services/social";
-export async function actRecordSocialEvent(e: ApiContext) {
+export async function actRecordSocialEvent(e: Event) {
   return e.json(
     await recordSocialEventServices(
       socialEventSchema.parse(await readRequestBody(e.req)),
