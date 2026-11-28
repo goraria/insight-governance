@@ -7,7 +7,7 @@ export function requireSocialWorker(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(e.req.raw, "social:insight:publish");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, e.req.raw);
     }
     return next();
   };

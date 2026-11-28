@@ -1,4 +1,4 @@
-import { readRequestBody } from "@/utils/request";
+import { readRequestBody } from "@/modules/principle/request";
 import type { Event } from "@/utils/interface";
 import { readerPolicySchema } from "@/schemas/reader-policy";
 import { rawReadReaderPolicy as readReaderPolicyServices } from "@/services/reader-policy";

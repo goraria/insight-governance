@@ -7,7 +7,7 @@ export function requireReaderPolicy(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(e.req.raw, "reader:insight:policy");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, e.req.raw);
     }
     return next();
   };

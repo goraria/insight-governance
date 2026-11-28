@@ -1,5 +1,5 @@
 import { beforeEach, expect, it, vi } from "vitest";
-vi.mock("@/utils/sso-directory", () => ({
+vi.mock("@/modules/structure/sso-directory", () => ({
   getApplicationOrigin: async () => "https://reader.example.test",
 }));
 vi.mock("@/utils/environment", () => ({

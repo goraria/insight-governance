@@ -1,12 +1,5 @@
-import { defineErrorHandler } from "nitro";
+import { createServiceRouteFallback } from "@/modules/principle/service-errors";
 
-export function routeNotFound(request: Request) {
-  return Response.json(
-      { error: "Not Found", path: new URL(request.url).pathname },
-      { status: 404 },
-    );
-}
-
-export default defineErrorHandler((error, event) => {
-  if (error.status === 404 || error.status === 405) return routeNotFound(event.req)
-});
+const fallback = createServiceRouteFallback("Not Found", false);
+export const routeNotFound = fallback.routeNotFound;
+export default fallback.handler;

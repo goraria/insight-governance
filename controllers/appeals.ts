@@ -1,5 +1,5 @@
 import type { Event } from "@/utils/interface";
-import { getQueryValues } from "@/utils/request";
+import { getQueryValues } from "@/modules/principle/request";
 import { pageSchema } from "@/schemas/insight";
 import {
   rawMyEnforcements as myEnforcementsServices,

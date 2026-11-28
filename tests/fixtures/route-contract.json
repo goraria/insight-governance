@@ -1,4 +1,6 @@
 [
+  "GET /.well-known/oauth-protected-resource",
+  "GET /",
   "GET /health",
   "GET /insight/analytics",
   "GET /insight/appeal",

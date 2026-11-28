@@ -7,7 +7,7 @@ export function requireSocialPolicy(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(e.req.raw, "social:insight:policy");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, e.req.raw);
     }
     return next();
   };

@@ -7,7 +7,7 @@ export function requireReaderWorker(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(e.req.raw, "reader:insight:publish");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, e.req.raw);
     }
     return next();
   };

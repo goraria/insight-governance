@@ -5,7 +5,7 @@ import {
   exportJWK,
   SignJWT,
 } from "@gorth-com/principle/cores/jose";
-vi.mock("@/utils/sso-directory", () => ({
+vi.mock("@/modules/structure/sso-directory", () => ({
   requireServiceMachineBinding: async (_service: string, _audience: string, id: string) => {
     if (!["existing-confidential-client", "rotated-existing-client"].includes(id))
       throw new HTTPError({ status: 403 });
@@ -14,9 +14,12 @@ vi.mock("@/utils/sso-directory", () => ({
 }));
 vi.mock("@/utils/environment", () => ({
   authUrl: "https://machine-auth.example.test",
+  nodeEnv: "production",
   isProduction: true,
 }));
 import { verifyMachineRequest } from "@/lib/auth/machine";
+import { serviceAuthFailure, serviceResourceMetadata } from "@/lib/auth/verification";
+import { createInsufficientScopeError } from "better-auth/oauth2";
 let pair: Awaited<ReturnType<typeof generateKeyPair>>;
 let key: Awaited<ReturnType<typeof exportJWK>>;
 beforeAll(async () => {
@@ -67,6 +70,52 @@ it("accepts an existing confidential client with the exact machine scope", async
   expect(
     await verifyMachineRequest(request(await token()), "task:insight:publish"),
   ).toMatchObject({ client_id: "existing-confidential-client" });
+});
+
+it("serves the resource metadata advertised by a native Bearer challenge", async () => {
+  const response = await serviceAuthFailure(new HTTPError({ status: 401 }), request());
+  expect(response.status).toBe(401);
+  expect(response.headers.get("www-authenticate")).toMatch(
+    /^Bearer resource_metadata="https:\/\/machine-service\.example\.test\/\.well-known\/oauth-protected-resource"$/,
+  );
+  const metadata = await serviceResourceMetadata();
+  expect(await metadata.json()).toEqual({
+    resource: "https://machine-service.example.test",
+    authorization_servers: ["https://machine-auth.example.test/auth"],
+    bearer_methods_supported: ["header"],
+  });
+});
+
+it("advertises the missing scope but omits challenges for ordinary permission denials", async () => {
+  const wireRequest = request("example-token");
+  const missing = await serviceAuthFailure(
+    createInsufficientScopeError(["chat:insight:publish"]),
+    wireRequest,
+  );
+  expect(missing.headers.get("www-authenticate")).toContain('scope="chat:insight:publish"');
+  const denied = await serviceAuthFailure(new HTTPError({ status: 403 }), wireRequest);
+  expect(denied.headers.has("www-authenticate")).toBe(false);
+});
+
+it("advertises Bearer for a request using an unsupported authentication scheme", async () => {
+  const response = await serviceAuthFailure(
+    new HTTPError({ status: 401 }),
+    new Request("https://machine-service.example.test/event", {
+      headers: { Authorization: "DPoP example-token" },
+    }),
+  );
+  expect(response.headers.get("www-authenticate")).toMatch(/^Bearer /);
+});
+
+it.each([
+  ["sso_directory_unavailable", "sso_directory_unavailable"],
+  ["sso_service_not_registered", "sso_service_not_registered"],
+  ["sso_service_bindings_unavailable", "sso_service_bindings_unavailable"],
+  ["private upstream detail", "auth_unavailable"],
+])("reports only safe machine authorization diagnostics for %s", async (message, expected) => {
+  const response = await serviceAuthFailure(new HTTPError({ status: 503, message }), request());
+  expect(response.status).toBe(503);
+  await expect(response.json()).resolves.toEqual({ error: expected });
 });
 it("does not require copying the existing client ID into receiver env", async () => {
   expect(

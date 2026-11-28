@@ -1,5 +1,5 @@
 import { HTTPError } from "nitro/h3";
-import { getApplicationOrigin } from "@/utils/sso-directory";
+import { getApplicationOrigin } from "@/modules/structure/sso-directory";
 import { isProduction } from "@/utils/environment";
 export async function canAppealReaderContent(
   resourceType: string,

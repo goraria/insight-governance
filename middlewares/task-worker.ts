@@ -7,7 +7,7 @@ export function requireTaskWorker(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(event.req.raw, "task:insight:publish");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, event.req.raw);
     }
     return await next();
   };

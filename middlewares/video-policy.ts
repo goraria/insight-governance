@@ -7,7 +7,7 @@ export function requireVideoPolicy(): MiddlewareHandler<Binding> {
     try {
       await verifyMachineRequest(e.req.raw, "video:insight:policy");
     } catch (error) {
-      return serviceAuthFailure(error);
+      return serviceAuthFailure(error, e.req.raw);
     }
     return next();
   };
